@@ -3,9 +3,18 @@ import sys
 import gphoto2 as gp
 import io
 import os
+import time
 from gpiozero import Button
 
 DEBUG = True
+
+FOLDER_NAME = time.strftime("%Y%m%d/")
+IMAGE_DIRECTORY = "/home/pi/myphotobooth/images/"
+SAVE_DIRECTORY = IMAGE_DIRECTORY + FOLDER_NAME
+if not os.path.exists(SAVE_DIRECTORY):
+    if DEBUG:
+        print("Creating a new folder at: {}".format(SAVE_DIRECTORY))
+    os.makedirs(SAVE_DIRECTORY)
 
 #Colors and sizes
 size = (1280, 720)
@@ -56,6 +65,7 @@ def get_camera_preview():
     return preview_image_convert, preview_image_rect
 
 def take_one_picture():
+    time_name = time.strftime("%H%M%S")
     success = False
     while not success:
         try:
@@ -66,7 +76,7 @@ def take_one_picture():
             pg.time.wait(1000)
     
     
-    target = "/home/pi/myphotobooth/images/{}".format(file_path.name)
+    target = "{}{}_{}".format(SAVE_DIRECTORY, time_name, file_path.name)
     
     if DEBUG:
         print('Camera file path: {0}{1}'.format(file_path.folder, file_path.name))
@@ -142,10 +152,13 @@ def take_pictures(surface, num_pics = 3, total_countdown_seconds = 3.0):
 
     return images
 
-def create_final_image(surface, imgs):
+def create_final_image(surface, imgs, print_dimensions = (2, 6), dpi = 300):
+    image_surface = pg.Surface((print_dimensions[0] * dpi, print_dimensions[1] * dpi))
     border_thickness = 25
-    image_scale = 0.4
-    surface.fill(white)
+    image_scale = 0.25
+    time_name = time.strftime("%H%M")
+    
+    """
     vertical_middle = surface.get_rect().height / 2.0
     horizontal_middle = surface.get_rect().width / 2.0
     
@@ -156,22 +169,30 @@ def create_final_image(surface, imgs):
     pg.draw.rect(surface, black, vertical_bar)
     pg.draw.rect(surface, black, horizontal_bar)
     
+    
     font_surface = font.render("EVENT NAME Photos!\nDATE", True, black)
     surface.blit(font_surface, (10, 10))
-    
-    img_positions = [(horizontal_middle + border_thickness, border_thickness), \
-                     (border_thickness, vertical_middle + border_thickness), \
-                     (horizontal_middle + border_thickness, vertical_middle + border_thickness)]
+    """
+    img_positions = [(0, 0), \
+                     (0, image_surface.get_rect().height * 0.25), \
+                     (0, image_surface.get_rect().height * 0.25)]
     
     for i in range(len(imgs)):
-        img_surface = pg.image.load(imgs[i])
-        img_surface_scaled = pg.transform.scale(img_surface, (int(surface.get_rect().width * image_scale), \
-                                                              int(surface.get_rect().height * image_scale)))
-        surface.blit(img_surface_scaled, img_positions[i])
+        current_image = pg.image.load(imgs[i])
+        current_image_scaled = pg.transform.scale(current_image, (int(image_surface.get_rect().width), \
+                                                              int(image_surface.get_rect().height * image_scale)))
+        image_surface.blit(current_image_scaled, img_positions[i])
         
+    surface.fill(white)
+    image_surface_scaled = pg.transform.scale(image_surface, (int(image_surface.get_rect().width * 0.5),\
+                                                              int(image_surface.get_rect().height * 0.5)))
+    surface.blit(image_surface, (int(surface.get_rect().width * 0.33), 0))
+    surface.blit(image_surface, (int(surface.get_rect().width * 0.66), 0))
     update_screen()
     pg.time.wait(5000)
-    target = "/home/pi/myphotobooth/images/final_image.jpg"
+    target = "{}final_image_{}.jpg".format(SAVE_DIRECTORY, time_name)
+    if DEBUG:
+        print("Saving final image to: {}".format(target))
     pg.image.save(surface, target)
     return target
 
@@ -210,8 +231,10 @@ while True:
         start_picture_process()
             
     preview_image, preview_image_rect = get_camera_preview()
-    
-    screen.fill(black)
+    opening_image = pg.image.load("{}photobooth_opening.png".format(IMAGE_DIRECTORY))
+    opening_image_scaled = pg.transform.scale(opening_image, size)
+    opening_image_rect = opening_image_scaled.get_rect()
+    screen.fill(white)
 
-    screen.blit(preview_image, preview_image_rect)
+    screen.blit(opening_image_scaled, opening_image_rect)
     update_screen()
