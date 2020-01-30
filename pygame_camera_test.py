@@ -1,6 +1,7 @@
 import pygame as pg
-import sys
 import gphoto2 as gp
+import cups
+import sys
 import io
 import os
 import time
@@ -47,8 +48,17 @@ while not camera_connected:
         print("Camera not detected, please turn camera on. Attempting to connect again in 3 seconds...")
         pg.time.wait(3000)
 
-#initilize button
+#initialize button
 button = Button(25)
+
+#initialzie printer
+"""
+cups.setServer("localhost")
+conn = cups.Connection()
+printers = conn.getPrinters()
+for printer in printers:
+    print("{} - {}".format(printer, printers[printer]['device-uri']))
+"""
 
 def update_screen():
     pg.display.flip()
@@ -154,8 +164,9 @@ def take_pictures(surface, num_pics = 3, total_countdown_seconds = 3.0):
 
 def create_final_image(surface, imgs, print_dimensions = (2, 6), dpi = 300):
     image_surface = pg.Surface((print_dimensions[0] * dpi, print_dimensions[1] * dpi))
+    image_surface.fill(white)
     border_thickness = 25
-    image_scale = 0.25
+    image_scale = 720.0 / 1800.0
     time_name = time.strftime("%H%M")
     
     """
@@ -174,33 +185,48 @@ def create_final_image(surface, imgs, print_dimensions = (2, 6), dpi = 300):
     surface.blit(font_surface, (10, 10))
     """
     img_positions = [(0, 0), \
-                     (0, image_surface.get_rect().height * 0.25), \
-                     (0, image_surface.get_rect().height * 0.25)]
+                     (0, 455), \
+                     (0, 455*2)]
     
     for i in range(len(imgs)):
         current_image = pg.image.load(imgs[i])
-        current_image_scaled = pg.transform.scale(current_image, (int(image_surface.get_rect().width), \
-                                                              int(image_surface.get_rect().height * image_scale)))
+        current_image_scaled = pg.transform.scale(current_image, (600, 403))
         image_surface.blit(current_image_scaled, img_positions[i])
         
     surface.fill(white)
-    image_surface_scaled = pg.transform.scale(image_surface, (int(image_surface.get_rect().width * 0.5),\
-                                                              int(image_surface.get_rect().height * 0.5)))
-    surface.blit(image_surface, (int(surface.get_rect().width * 0.33), 0))
-    surface.blit(image_surface, (int(surface.get_rect().width * 0.66), 0))
+    image_surface_scaled = pg.transform.scale(image_surface, (int(image_surface.get_rect().width * image_scale),\
+                                                              int(image_surface.get_rect().height * image_scale)))
+    surface.blit(image_surface_scaled, (int(surface.get_rect().width * 0.25), 0))
+    surface.blit(image_surface_scaled, (int(surface.get_rect().width * 0.75), 0))
     update_screen()
     pg.time.wait(5000)
     target = "{}final_image_{}.jpg".format(SAVE_DIRECTORY, time_name)
     if DEBUG:
         print("Saving final image to: {}".format(target))
-    pg.image.save(surface, target)
+    pg.image.save(image_surface, target)
     return target
 
 def start_picture_process():
     if DEBUG:
-        print("Taking pictures...")
+        print("Starting picture process...")
     three_imgs = take_pictures(screen, num_pics = 3)
     final_img = create_final_image(screen, three_imgs)
+    print_image(screen, final_img)
+    
+def print_image(surface, image_file):
+    if DEBUG:
+        print("Printing image: {}".format(image_file))
+        
+    surface_rect = surface.get_rect()
+    center_screen = (int(surface_rect.width / 2), int(surface_rect.height / 2))
+    surface.fill(white)
+    text_surface = font.render("Printing...", True, black)
+    text_rect = text_surface.get_rect(center = center_screen)
+    surface.blit(text_surface, text_rect)
+    update_screen()
+    
+    initialize_printer()
+    
     
 while True:
     for event in pg.event.get():
@@ -230,8 +256,9 @@ while True:
             print("Pressed")
         start_picture_process()
             
-    preview_image, preview_image_rect = get_camera_preview()
+    #preview_image, preview_image_rect = get_camera_preview()
     opening_image = pg.image.load("{}photobooth_opening.png".format(IMAGE_DIRECTORY))
+    opening_image = opening_image.convert()
     opening_image_scaled = pg.transform.scale(opening_image, size)
     opening_image_rect = opening_image_scaled.get_rect()
     screen.fill(white)
