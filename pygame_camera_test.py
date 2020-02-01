@@ -28,14 +28,7 @@ pg.init()
 screen = pg.display.set_mode(size)
 clock = pg.time.Clock()
 pg.font.init()
-font = pg.font.SysFont("TimesNewRoman", 36)
-
-#img = pg.image.load("SAM_0138.JPG")
-#img = pg.transform.scale(img, screen.get_size())
-#imgrect = img.get_rect()
-#img.convert()
-
-
+font = pg.font.SysFont("TimesNewRoman", 48)
 
 #initialize camera
 camera_connected = False
@@ -52,13 +45,24 @@ while not camera_connected:
 button = Button(25)
 
 #initialzie printer
-"""
 cups.setServer("localhost")
-conn = cups.Connection()
-printers = conn.getPrinters()
-for printer in printers:
-    print("{} - {}".format(printer, printers[printer]['device-uri']))
-"""
+success = False
+while not success:
+    try:
+        conn = cups.Connection()
+        printers = conn.getPrinters()
+
+        if DEBUG:
+            for printer in printers:
+                print("{} - {}".format(printer, printers[printer]['device-uri']))
+                PRINTER_NAME = printer
+            print("Main printer: {}".format(PRINTER_NAME))
+        success = True
+    except RuntimeError:
+        print("Not able to connect to printer, trying again in one second...")
+        pg.time.wait(1000)
+                
+
 
 def update_screen():
     pg.display.flip()
@@ -76,6 +80,8 @@ def get_camera_preview():
 
 def take_one_picture():
     time_name = time.strftime("%H%M%S")
+    if DEBUG:
+        print("Taking one picture {}".format(time_name))
     success = False
     while not success:
         try:
@@ -103,6 +109,8 @@ def take_one_picture():
     return capture_image_convert, capture_image_rect, target
 
 def take_pictures(surface, num_pics = 3, total_countdown_seconds = 3.0):
+    if DEBUG:
+        print("Taking {} pictures...".format(num_pics))
     surface_rect = surface.get_rect()
     center_screen = (int(surface_rect.width / 2), int(surface_rect.height / 2))
     #text_center_screen = (center_screen[0], center_screen[1])
@@ -206,12 +214,13 @@ def create_final_image(surface, imgs, print_dimensions = (2, 6), dpi = 300):
     pg.image.save(image_surface, target)
     return target
 
-def start_picture_process():
+def start_picture_process(print_final = False):
     if DEBUG:
         print("Starting picture process...")
     three_imgs = take_pictures(screen, num_pics = 3)
     final_img = create_final_image(screen, three_imgs)
-    print_image(screen, final_img)
+    if print_final:
+        print_image(screen, final_img)
     
 def print_image(surface, image_file):
     if DEBUG:
@@ -225,7 +234,10 @@ def print_image(surface, image_file):
     surface.blit(text_surface, text_rect)
     update_screen()
     
-    initialize_printer()
+    conn.printFile(PRINTER_NAME, image_file, "final image", {})
+    pg.time.wait(10000)
+    
+    #initialize_printer()
     
     
 while True:
@@ -254,7 +266,8 @@ while True:
     if button.is_pressed:
         if DEBUG:
             print("Pressed")
-        start_picture_process()
+        start_picture_process(print_final = True)
+        pg.event.clear()
             
     #preview_image, preview_image_rect = get_camera_preview()
     opening_image = pg.image.load("{}photobooth_opening.png".format(IMAGE_DIRECTORY))
