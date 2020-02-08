@@ -69,6 +69,7 @@ class Photobooth():
 
         final_image_location = self.ui.create_final_image(images)
         self.ui.print_screen(final_image_location)
+        self.printer.print_image(final_image_location)
 
 
     def take_one_picture():

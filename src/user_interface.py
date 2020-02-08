@@ -6,7 +6,7 @@ BUTTON_GPIO_PIN = 25
 
 class UserInterface():
 
-    def __init__(self, size = (1280, 720), fullscreen = False):
+    def __init__(self, size = (1280, 720), fullscreen = False, font_size = 48):
         #Colors and sizes
         self.size = size
         self.fullscreen = fullscreen
@@ -17,13 +17,14 @@ class UserInterface():
 
         #initialize pygame, it's background, font and clock
         pg.init()
+        pygame.display.set_caption('Photobooth', icontitle = None)
         pg.font.init()
         if fullscreen:
             self.screen = pg.display.set_mode(size, flags = pg.FULLSCREEN)
         else:
             self.screen = pg.display.set_mode(size)
         self.clock = pg.time.Clock()
-        self.font = pg.font.SysFont("TimesNewRoman", 48)
+        self.font = pg.font.SysFont("TimesNewRoman", font_size)
 
         #for the physical button on the outside of the photobooth
         self.button = Button(BUTTON_GPIO_PIN)
@@ -143,7 +144,8 @@ class UserInterface():
         surface.blit(text_surface, text_rect)
         self.set_screen_display(surface, surface_rect)
 
-    def countdown_screen(self, camera, total_countdown_seconds = 3):
+    #needs testing to make sure camera works
+    def countdown_screen(self, camera, total_countdown_seconds = 3.0):
         surface = pg.Surface(self.size)
         surface_rect = surface.get_rect()
 
@@ -155,9 +157,9 @@ class UserInterface():
         while count > 0:
             self.set_screen_display(surface, surface_rect)
 
-            #get preview image and text surfaces
+            #get preview image and text surfaces from camera
             preview_image, preview_image_rect = self.scale_and_convert(camera.get_camera_preview())
-            text_surface = self.font.render("{:.1f}".format(count), True, self.colors_dict["black"])
+            text_surface = self.font.render("{:.0f}".format(count), True, self.colors_dict["black"])
             text_rect = text_surface.get_rect(center = self.center_screen)
 
             #fill to reset surfaces, so it doesn't leave traces of previous frame
@@ -171,6 +173,8 @@ class UserInterface():
             surface.blit(preview_image, preview_image_rect)
             surface.blit(alpha_surface, (0, 0))
 
+            #the clock get_time() gets the time between the last 2 clock ticks
+            #the clock ticks every time the screen is updated
             count -= self.clock.get_time() / 1000.0
 
         surface.fill(self.colors_dict["white"])

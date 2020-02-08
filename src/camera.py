@@ -34,8 +34,8 @@ class Camera():
 
     def get_camera_capture(self, save_dest):
         """
-        Captures an image from the camera and saves it at the passed in destination. Since the destination is passed in, it is not necessary to
-        return the final image path.
+        Captures an image from the camera and saves it at the passed in destination.
+        Since the destination is passed in, it is not necessary to return the final image path.
 
         return - boolean of success
         """
