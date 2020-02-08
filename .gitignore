@@ -1,0 +1,11 @@
+.pygametest.py.swo
+.pygametest.py.swp
+__pycache__/*
+__pycahce__
+images/20200129
+images/20200130
+images/20200131
+images/20200205
+images/photobooth_opening_old.png
+env/*
+env
