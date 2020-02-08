@@ -71,6 +71,7 @@ def update_screen():
 def get_camera_preview():
     preview_file = camera.capture_preview()
     preview_file_data = preview_file.get_data_and_size()
+    print(io.BytesIO(preview_file_data))
     preview_image = pg.image.load(io.BytesIO(preview_file_data))
     preview_image_scaled = pg.transform.scale(preview_image, screen.get_size())
     preview_image_convert = preview_image_scaled.convert()
