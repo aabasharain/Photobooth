@@ -167,7 +167,7 @@ class UserInterface():
             alpha_surface.fill(pg.Color(0, 0, 0, 0))
 
             #draw circle and blit everything in order onto surfaces
-            circle_rect = pg.draw.circle(alpha_surface, pg.Color(255, 255, 255, 175), self.center_screen, int(size[0] / 16))
+            circle_rect = pg.draw.circle(alpha_surface, pg.Color(255, 255, 255, 175), self.center_screen, int(self.size[0] / 16))
             alpha_surface.blit(text_surface, text_rect)
 
             surface.blit(preview_image, preview_image_rect)

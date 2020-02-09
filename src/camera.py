@@ -22,7 +22,7 @@ class Camera():
 
     def get_camera_preview(self):
         try:
-            preview_file = camera.capture_preview()
+            preview_file = self.camera.capture_preview()
             preview_file_data = preview_file.get_data_and_size()
 
             #this is loadable with pygame through pygame.image.load()
