@@ -46,7 +46,7 @@ class Photobooth():
                 self.ui.toggle_fullscreen()
             elif key_pressed == "F2":
                 self.printer.change_default_printer()
-            elif key_pressed == "DWN":
+            elif key_pressed == "DWN" or key_pressed = "BTN":
                 connected = True
         if not os.path.exists(SAVE_DIRECTORY):
             if DEBUG:

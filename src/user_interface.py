@@ -138,7 +138,7 @@ class UserInterface():
         printer_name_text = self.font.render("Connected to: {}".format(printer_name), True, self.colors_dict["black"])
         printer_name_rect = printer_name_text.get_rect(center = (pos_x, pos_y + 150))
 
-        instruction_text = self.font.render("Press Down to continue.", True, self.colors_dict["black"])
+        instruction_text = self.font.render("Press Button or Down Arrow to continue.", True, self.colors_dict["black"])
         instruction_text_rect = instruction_text.get_rect(center = (pos_x, pos_y + 250))
         
         instruction_text1 = self.font.render("Press F1 to enter fullscreen.", True, self.colors_dict["black"])
@@ -164,7 +164,7 @@ class UserInterface():
 
     def opening_screen(self):
         self.update_screen()
-        opening_image, opening_rect = self.scale_and_convert("../images/photobooth_opening.png")
+        opening_image, opening_rect = self.scale_and_convert("images/photobooth_opening.png")
         self.set_screen_display(opening_image, opening_rect)
 
     def x_of_y_screen(self, x, y):
