@@ -17,7 +17,7 @@ class UserInterface():
 
         #initialize pygame, it's background, font and clock
         pg.init()
-        pygame.display.set_caption('Photobooth', icontitle = None)
+        pg.display.set_caption('Photobooth')
         pg.font.init()
         if fullscreen:
             self.screen = pg.display.set_mode(size, flags = pg.FULLSCREEN)
