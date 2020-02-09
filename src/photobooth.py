@@ -44,35 +44,56 @@ class Photobooth():
             os.makedirs(SAVE_DIRECTORY)
 
     def start(self):
-        self.ui.opening_screen()
-        key_pressed = self.ui.wait_for_input()
+        while True:
+            if DEBUG:
+                print("Showing Opening screen.")
+            self.ui.opening_screen()
+            key_pressed = self.ui.wait_for_input()
+            
+            if DEBUG:
+                print("{} Key was pressed.".format(key_pressed))
 
-        if key_pressed == "ESC":
-            sys.exit()
-            return
-        elif key_pressed == "F1":
-            self.ui.toggle_fullscreen()
-        elif key_pressed == "DWN" or key_pressed == "BTN":
-            self.start_picture_process()
+            if key_pressed == "ESC":
+                sys.exit()
+                return
+            elif key_pressed == "F1":
+                self.ui.toggle_fullscreen()
+            elif key_pressed == "DWN" or key_pressed == "BTN":
+                self.ui.update_screen()
+                self.start_picture_process()
 
     def start_picture_process(self, num_pics = 3):
+        if DEBUG:
+            print("Starting picture process: {} pictures...".format(num_pics))
         images = [] #the file paths to each picture
         for i in range(num_pics):
-            self.ui.x_of_y_screen(i, num_pics)
+            if DEBUG:
+                print("Showing {} of {} screen.".format(i + 1, num_pics))
+            self.ui.x_of_y_screen(i + 1, num_pics)
             self.ui.wait(3000)
+            
+            if DEBUG:
+                print("Showing countdown screen.")
             self.ui.countdown_screen(self.camera)
 
+            if DEBUG:
+                print("Taking one picture and showing it on screen.")
             images.append(self.take_one_picture())
             self.ui.image_screen(images[i])
+            self.ui.wait(3000)
             if DEBUG:
                 print("Saving image #{} at: {}".format(i, images[i]))
 
-        final_image_location = self.ui.create_final_image(images)
+        target = "{}final_image_{}.jpg".format(SAVE_DIRECTORY, time.strftime("%H%M"))
+        final_image_location = self.ui.create_final_image(images, target)
+        if DEBUG:
+            print("Saving final image at {} and showing print screen.".format(final_image_location))
         self.ui.print_screen(final_image_location)
+        self.ui.wait(5000)
         self.printer.print_image(final_image_location)
 
 
-    def take_one_picture():
+    def take_one_picture(self):
         time_name = time.strftime("%H%M%S")
         target = "{}{}".format(SAVE_DIRECTORY, time_name)
         if DEBUG:

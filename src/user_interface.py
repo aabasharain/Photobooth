@@ -1,5 +1,6 @@
 import pygame as pg
 from gpiozero import Button
+from camera import Camera
 
 BUTTON_GPIO_PIN = 25
 
@@ -35,9 +36,9 @@ class UserInterface():
 
     def toggle_fullscreen(self):
         if self.fullscreen:
-            self.screen = pg.display.set_mode(size)
+            self.screen = pg.display.set_mode(self.size)
         else:
-            self.screen = pg.display.set_mode(size, flags = pg.FULLSCREEN)
+            self.screen = pg.display.set_mode(self.size, flags = pg.FULLSCREEN)
         self.fullscreen = not self.fullscreen
 
     def wait(self, amt):
@@ -45,6 +46,8 @@ class UserInterface():
         Waiting functionality accessible outside of this class.
         """
         pg.time.wait(amt)
+        #update screen twice to tick clock twice to avoid large gaps in consecutive ticks
+        self.update_screen()
         self.update_screen()
 
     def scale_and_convert(self, file, scale = (1280, 720)):
@@ -105,10 +108,11 @@ class UserInterface():
 
             if self.button.is_pressed:
                 pg.event.clear()
-                return "BUTTON"
+                return "BTN"
 
     def setup_screen(self, camera_status, printer_status, camera_color = "red", printer_color = "red"):
         #setup here
+        self.update_screen()
         surface = pg.Surface(self.size)
         surface_rect = surface.get_rect()
 
@@ -131,10 +135,12 @@ class UserInterface():
         self.set_screen_display(surface, surface_rect)
 
     def opening_screen(self):
+        self.update_screen()
         opening_image, opening_rect = self.scale_and_convert("../images/photobooth_opening.png")
         self.set_screen_display(opening_image, opening_rect)
 
     def x_of_y_screen(self, x, y):
+        self.update_screen()
         surface = pg.Surface(self.size)
         surface_rect = surface.get_rect()
 
@@ -146,6 +152,7 @@ class UserInterface():
 
     #needs testing to make sure camera works
     def countdown_screen(self, camera, total_countdown_seconds = 3.0):
+        self.update_screen()
         surface = pg.Surface(self.size)
         surface_rect = surface.get_rect()
 
@@ -185,6 +192,7 @@ class UserInterface():
         self.set_screen_display(surface, surface_rect)
 
     def image_screen(self, img):
+        self.update_screen()
         surface = pg.Surface(self.size)
         img_surface, img_rect = self.scale_and_convert(img)
 
@@ -196,6 +204,7 @@ class UserInterface():
         Takes in the location of the 'final image' and makes a screen to show,
         the final image and inform the user that the photobooth is printing.
         """
+        self.update_screen()
         surface = pg.Surface(self.size)
         surface_rect = surface.get_rect()
         img_surface, img_rect = self.scale_and_convert(img, scale = (100, 300))
@@ -208,34 +217,23 @@ class UserInterface():
         surface.blit(img_surface, (int(self.center_screen[0] - img_rect.width / 2), int(img_rect.height / 2)))
         self.set_screen_display(surface, surface_rect)
 
-    def create_final_image(images, print_dimensions = (2, 6), dpi = 300):
+    def create_final_image(self, images, target, print_dimensions = (2, 6), dpi = 300):
         """
         From 3 images, creates a final image to be used for printing, default
         settings is to be printed on a 2in x 6in photo strip at 300dpi.
 
         return - final image location
         """
-        surface = pg.Surface(self.size)
-        surface_rect = surface.get_rect()
         image_surface = pg.Surface((print_dimensions[0] * dpi, print_dimensions[1] * dpi))
         image_surface.fill(self.colors_dict["white"])
         image_scale = 720.0 / 1800.0
-        time_name = time.strftime("%H%M")
 
         image_positions = [(0, 0), (0, 455), (0, 455*2)]
 
-        for i in range(len(imgs)):
-            current_image = self.scale_and_convert(images[i], scale = (600, 403))
-            image_surface.blit(current_image_scaled, image_positions[i])
+        for i in range(len(images)):
+            current_image, current_image_rect = self.scale_and_convert(images[i], scale = (600, 403))
+            image_surface.blit(current_image, image_positions[i])
 
-        surface.fill(white)
-        #scale to fit inside display since printed image is different resolution than what gets displayed
-        image_surface_scaled = pg.transform.scale(image_surface, (int(image_surface.get_rect().width * image_scale),\
-                                                                  int(image_surface.get_rect().height * image_scale)))
-        surface.blit(image_surface_scaled, (int(surface_rect.width * 0.25), 0))
-        surface.blit(image_surface_scaled, (int(surface_rect.width * 0.5), 0))
-
-        target = "{}final_image_{}.jpg".format(SAVE_DIRECTORY, time_name)
 
         pg.image.save(image_surface, target)
 

@@ -41,8 +41,8 @@ class Camera():
         """
         success = False
         try:
-            file_path = camera.capture(gp.GP_CAPTURE_IMAGE)
-            camera_file = camera.file_get(file_path.folder, file_path.name, gp.GP_FILE_TYPE_NORMAL)
+            file_path = self.camera.capture(gp.GP_CAPTURE_IMAGE)
+            camera_file = self.camera.file_get(file_path.folder, file_path.name, gp.GP_FILE_TYPE_NORMAL)
             camera_file.save(save_dest)
             success = True
         except gp.GPhoto2Error:

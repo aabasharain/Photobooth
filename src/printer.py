@@ -7,7 +7,7 @@ class Printer():
         self.printer_name = ""
         self.conn = ""
 
-    def start(self, printer_name):
+    def start(self):
         success = False
         try:
             self.conn = cups.Connection()
@@ -29,5 +29,5 @@ class Printer():
 
         return success
 
-    def print_image(img):
+    def print_image(self, img):
         self.conn.printFile(self.printer_name, img, "final image", {})
