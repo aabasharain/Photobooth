@@ -26,15 +26,17 @@ class Photobooth():
         while not connected:
             camera_status = self.camera.start()
             printer_status = self.printer.start()
+            
+            printer_name = self.printer.get_name()
 
             if camera_status and printer_status:
-                self.ui.setup_screen("Connected", "Connected", "green", "green")
+                self.ui.setup_screen("Connected", "Connected", printer_name)
             elif camera_status and not printer_status:
-                self.ui.setup_screen("Connected", "Not Connected", "green", "red")
+                self.ui.setup_screen("Connected", "Not Connected", printer_name)
             elif not camera_status and printer_status:
-                self.ui.setup_screen("Not Connected", "Connected", "red", "green")
+                self.ui.setup_screen("Not Connected", "Connected", printer_name)
             else:
-                self.ui.setup_screen("Not Connected", "Not Connected", "red", "red")
+                self.ui.setup_screen("Not Connected", "Not Connected", printer_name)
 
             key_pressed = self.ui.wait_for_input()
             if key_pressed == "ESC":

@@ -7,6 +7,8 @@ class Printer():
         self.printer_name = self.load_default_printer()
         self.conn = ""
 
+    def get_name(self):
+        return self.printer_name
     def start(self):
         success = False
         try:
@@ -53,5 +55,6 @@ class Printer():
             name = ""
             
         return name
+    
     def print_image(self, img):
         self.conn.printFile(self.printer_name, img, "final image", {})

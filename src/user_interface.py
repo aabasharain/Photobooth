@@ -111,19 +111,32 @@ class UserInterface():
                 pg.event.clear()
                 return "BTN"
 
-    def setup_screen(self, camera_status, printer_status, camera_color = "red", printer_color = "red"):
+    def setup_screen(self, camera_status, printer_status, printer_name):
         #setup here
         self.update_screen()
         surface = pg.Surface(self.size)
         surface_rect = surface.get_rect()
+        
+        if camera_status == "Connected":
+            camera_color = self.colors_dict["green"]
+        else:
+            camera_color = self.colors_dict["red"]
 
-        camera_text = self.font.render("Camera status: {}".format(camera_status), True, self.colors_dict[camera_color])
+        camera_text = self.font.render("Camera status: {}".format(camera_status), True, camera_color)
         pos_x = self.center_screen[0]
         pos_y = self.center_screen[1] - 150
         camera_text_rect = camera_text.get_rect(center = (pos_x, pos_y))
+        
+        if printer_status == "Connected":
+            printer_color = self.colors_dict["green"]
+        else:
+            printer_color = self.colors_dict["red"]
 
-        printer_text = self.font.render("Printer status: {}".format(printer_status), True, self.colors_dict[printer_color])
+        printer_text = self.font.render("Printer status: {}".format(printer_status), True, printer_color)
         printer_text_rect = printer_text.get_rect(center = (pos_x, pos_y + 75))
+        
+        printer_name_text = self.font.render("Connected to: {}".format(printer_name), True, self.colors_dict["black"])
+        printer_name_rect = printer_name_text.get_rect(center = (pos_x, pos_y + 150))
 
         instruction_text = self.font.render("Press Down to continue.", True, self.colors_dict["black"])
         instruction_text_rect = instruction_text.get_rect(center = (pos_x, pos_y + 250))
@@ -142,6 +155,7 @@ class UserInterface():
         surface.fill(self.colors_dict["white"])
         surface.blit(camera_text, camera_text_rect)
         surface.blit(printer_text, printer_text_rect)
+        surface.blit(printer_name_text, printer_name_rect)
         surface.blit(instruction_text, instruction_text_rect)
         surface.blit(instruction_text1, instruction_text1_rect)
         surface.blit(instruction_text2, instruction_text2_rect)
