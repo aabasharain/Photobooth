@@ -9,4 +9,8 @@ images/20200205
 images/photobooth_opening_old.png
 env/*
 env
+test/default_printer.txt
+
+
+
 src/__pycache__

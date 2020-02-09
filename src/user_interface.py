@@ -40,6 +40,7 @@ class UserInterface():
         else:
             self.screen = pg.display.set_mode(self.size, flags = pg.FULLSCREEN)
         self.fullscreen = not self.fullscreen
+        self.update_screen()
 
     def wait(self, amt):
         """
@@ -118,20 +119,33 @@ class UserInterface():
 
         camera_text = self.font.render("Camera status: {}".format(camera_status), True, self.colors_dict[camera_color])
         pos_x = self.center_screen[0]
-        pos_y = self.center_screen[1] - 75
+        pos_y = self.center_screen[1] - 150
         camera_text_rect = camera_text.get_rect(center = (pos_x, pos_y))
 
         printer_text = self.font.render("Printer status: {}".format(printer_status), True, self.colors_dict[printer_color])
         printer_text_rect = printer_text.get_rect(center = (pos_x, pos_y + 75))
 
-        instruction_text = self.font.render("Press Down to continue. Press F4 to refresh connection.", True, self.colors_dict["black"])
-        instruction_text_rect = instruction_text.get_rect(center = (pos_x, pos_y + 225))
+        instruction_text = self.font.render("Press Down to continue.", True, self.colors_dict["black"])
+        instruction_text_rect = instruction_text.get_rect(center = (pos_x, pos_y + 250))
+        
+        instruction_text1 = self.font.render("Press F1 to enter fullscreen.", True, self.colors_dict["black"])
+        instruction_text1_rect = instruction_text1.get_rect(center = (pos_x, pos_y + 300))
+        
+        instruction_text2 = self.font.render("Press F2 to change default printer (in command line).", True, self.colors_dict["black"])
+        instruction_text2_rect = instruction_text2.get_rect(center = (pos_x, pos_y + 350))
+
+
+        instruction_text3 = self.font.render("Press F4 to refresh connection.", True, self.colors_dict["black"])
+        instruction_text3_rect = instruction_text3.get_rect(center = (pos_x, pos_y + 400))
 
 
         surface.fill(self.colors_dict["white"])
         surface.blit(camera_text, camera_text_rect)
         surface.blit(printer_text, printer_text_rect)
         surface.blit(instruction_text, instruction_text_rect)
+        surface.blit(instruction_text1, instruction_text1_rect)
+        surface.blit(instruction_text2, instruction_text2_rect)
+        surface.blit(instruction_text3, instruction_text3_rect)
         self.set_screen_display(surface, surface_rect)
 
     def opening_screen(self):
@@ -183,8 +197,9 @@ class UserInterface():
 
             #the clock get_time() gets the time between the last 2 clock ticks
             #the clock ticks every time the screen is updated
-            count -= self.clock.get_time() / 1000.0
             self.set_screen_display(surface, surface_rect)
+            count -= self.clock.get_time() / 1000.0
+            
             
         surface.fill(self.colors_dict["white"])
         text_surface = self.font.render("Strike a pose!", True, self.colors_dict["black"])

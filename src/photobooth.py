@@ -14,9 +14,10 @@ SAVE_DIRECTORY = IMAGE_DIRECTORY + FOLDER_NAME
 class Photobooth():
 
     def __init__(self):
-        self.ui = UserInterface()
         self.camera = Camera()
         self.printer = Printer()
+        self.ui = UserInterface()
+        self.setup()
 
     def setup(self):
         #need error checking here
@@ -35,8 +36,15 @@ class Photobooth():
             else:
                 self.ui.setup_screen("Not Connected", "Not Connected", "red", "red")
 
-            input = self.ui.wait_for_input()
-            if input == "DWN":
+            key_pressed = self.ui.wait_for_input()
+            if key_pressed == "ESC":
+                sys.exit()
+                return
+            elif key_pressed == "F1":
+                self.ui.toggle_fullscreen()
+            elif key_pressed == "F2":
+                self.printer.change_default_printer()
+            elif key_pressed == "DWN":
                 connected = True
         if not os.path.exists(SAVE_DIRECTORY):
             if DEBUG:
@@ -58,6 +66,8 @@ class Photobooth():
                 return
             elif key_pressed == "F1":
                 self.ui.toggle_fullscreen()
+            elif key_pressed == "F4":
+                self.setup()
             elif key_pressed == "DWN" or key_pressed == "BTN":
                 self.ui.update_screen()
                 self.start_picture_process()
