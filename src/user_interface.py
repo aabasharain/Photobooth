@@ -161,8 +161,9 @@ class UserInterface():
         alpha_surface.fill(pg.Color(0, 0, 0, 0))
 
         count = total_countdown_seconds
+        self.update_screen()
         while count > 0:
-            self.set_screen_display(surface, surface_rect)
+            
 
             #get preview image and text surfaces from camera
             preview_image, preview_image_rect = self.scale_and_convert(camera.get_camera_preview())
@@ -183,7 +184,8 @@ class UserInterface():
             #the clock get_time() gets the time between the last 2 clock ticks
             #the clock ticks every time the screen is updated
             count -= self.clock.get_time() / 1000.0
-
+            self.set_screen_display(surface, surface_rect)
+            
         surface.fill(self.colors_dict["white"])
         text_surface = self.font.render("Strike a pose!", True, self.colors_dict["black"])
         text_rect = text_surface.get_rect(center = self.center_screen)

@@ -95,7 +95,7 @@ class Photobooth():
 
     def take_one_picture(self):
         time_name = time.strftime("%H%M%S")
-        target = "{}{}".format(SAVE_DIRECTORY, time_name)
+        target = "{}{}.jpg".format(SAVE_DIRECTORY, time_name)
         if DEBUG:
             print("Taking one picture {}".format(time_name))
             print('Copying image to', target)
