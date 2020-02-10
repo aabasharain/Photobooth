@@ -37,17 +37,18 @@ I recommend using a python virtual environment to install all of your libraries,
 
 Install all of the required libraries with pip, the links above should have instructions on how to install each library.
 
-Connect your button to GPIO pin 25 and ground on the raspberry pi.
+Connect your button to GPIO pin 25 (Pin 25 is set by default, but you can change in src/user_interface.py on line 22) and ground on the raspberry pi. See [Raspberry Pi Documentation](https://www.raspberrypi.org/documentation/usage/gpio/)
 
-Connect DSLR camera into one of the pi's USB ports.
+Connect DSLR camera into one of the pi's USB ports and turn the camera on. The Pi will not power your camera, unless that is a feature of your particular camera.
 
-Connect printer into one of the pi's USB ports. You will need to configure and setup your printer with CUPS, you can find documentation and instructions online for that.
+Connect printer into one of the pi's USB ports. You will need to configure and setup your printer with CUPS, you can find documentation and instructions online for that. Turn on printer.
 
 Change line 28 in src/photobooth.py to the full directory path of **your images folder**. By default it is set to:
 
 ```
 IMAGE_DIRECTORY = "/home/pi/myphotobooth/images/"
 ```
+*Note: I could make this a relative path to avoid this step, but I have found it to be safer to have the complete path.*
 
 Run the "main.py" file in the root folder of the project.
 
