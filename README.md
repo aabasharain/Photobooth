@@ -43,6 +43,12 @@ Connect DSLR camera into one of the pi's USB ports.
 
 Connect printer into one of the pi's USB ports. You will need to configure and setup your printer with CUPS, you can find documentation and instructions online for that.
 
+Change line 28 in src/photobooth.py to the full directory path of your images folder. By default it is set to:
+
+```
+IMAGE_DIRECTORY = "/home/pi/myphotobooth/images/"
+```
+
 Run the "main.py" file in the root folder of the project.
 
 ```
