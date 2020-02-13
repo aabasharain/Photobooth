@@ -39,9 +39,9 @@ Install all of the required libraries with pip, the links above should have inst
 
 Connect your button to GPIO pin 25 (Pin 25 is set by default, but you can change in src/user_interface.py on line 22) and ground on the raspberry pi. See [Raspberry Pi Documentation](https://www.raspberrypi.org/documentation/usage/gpio/).
 
-Connect DSLR camera into one of the pi's USB ports and turn the camera on. The Pi will not power your camera, unless that is a feature of your particular camera.
+Connect your DSLR camera into one of the pi's USB ports and turn the camera on. The Pi will not power your camera, unless that is a feature of your particular camera. *Note: I have only tested this with the Canon t3i, but I believe this program should work with any camera compatible with libgphoto2. See [gPhoto2 Supported Cameras](http://gphoto.org/proj/libgphoto2/support.php).*
 
-Connect printer into one of the pi's USB ports. You will need to configure and setup your printer with CUPS, you can find documentation and instructions online for that. Turn on printer.
+Connect your printer into one of the pi's USB ports. You will need to configure and setup your printer with CUPS, you can find documentation and instructions online for that. Turn on printer. *Note: I have only tested this with a couple printers, but I've found that if there is a Guten Print driver available it works well. See [Guten Print Supported Printers](http://gimp-print.sourceforge.net/p_Supported_Printers.php).*
 
 ### Running the program
 Run the "main.py" file in the root folder of the project.
