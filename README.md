@@ -37,7 +37,7 @@ Install all of the required libraries with pip, the links above should have inst
 
 ### Hardware connections
 
-Connect your button to GPIO pin 25 (Pin 25 is set by default, but you can change in src/user_interface.py on line 22) and ground on the raspberry pi. See [Raspberry Pi Documentation](https://www.raspberrypi.org/documentation/usage/gpio/)
+Connect your button to GPIO pin 25 (Pin 25 is set by default, but you can change in src/user_interface.py on line 22) and ground on the raspberry pi. See [Raspberry Pi Documentation](https://www.raspberrypi.org/documentation/usage/gpio/).
 
 Connect DSLR camera into one of the pi's USB ports and turn the camera on. The Pi will not power your camera, unless that is a feature of your particular camera.
 
