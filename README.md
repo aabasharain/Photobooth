@@ -25,10 +25,6 @@ HDMI Monitor/Screen
 
 This is still a work in progress, I will update this readme with instructions on setup when I am done.
 
-### Known bugs
-
-- There is still an issue with the very first countdown, it consistently skips from 3 to 1 too quickly, however the countdowns after that work as intended. This only happens on the *very first* countdown, so if you do multiple rounds of pictures without exiting the program it works fine on any of them after the first one.
-
 ## Setup
 
 Clone the repository to your preferred destination.

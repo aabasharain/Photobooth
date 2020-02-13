@@ -42,6 +42,7 @@ class UserInterface():
         else:
             self.screen = pg.display.set_mode(size)
         self.clock = pg.time.Clock()
+        self.clock.tick(30)
         self.font = pg.font.SysFont("TimesNewRoman", font_size)
 
         #for the physical button on the outside of the photobooth
@@ -207,7 +208,6 @@ class UserInterface():
         alpha_surface.fill(pg.Color(0, 0, 0, 0))
 
         count = total_countdown_seconds
-        self.update_screen()
         while count > 0:
             
 

@@ -72,6 +72,7 @@ class Photobooth():
             os.makedirs(SAVE_DIRECTORY)
 
     def start(self):
+        self.camera.get_camera_preview()
         while True:
             if DEBUG:
                 print("Showing Opening screen.")
@@ -98,13 +99,13 @@ class Photobooth():
         for i in range(num_pics):
             if DEBUG:
                 print("Showing {} of {} screen.".format(i + 1, num_pics))
+                print(self.ui.clock.get_time())
             self.ui.x_of_y_screen(i + 1, num_pics)
             self.ui.wait(3000)
-            self.ui.update_screen()
-            self.ui.update_screen()
             
             if DEBUG:
                 print("Showing countdown screen.")
+                print(self.ui.clock.get_time())
             self.ui.countdown_screen(self.camera)
 
             if DEBUG:
