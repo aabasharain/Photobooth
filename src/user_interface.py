@@ -274,11 +274,13 @@ class UserInterface():
 
         return - final image location
         """
-        image_surface = pg.Surface((print_dimensions[0] * dpi, print_dimensions[1] * dpi))
-        image_surface.fill(self.colors_dict["white"])
-        image_scale = 720.0 / 1800.0
+        dimensions = (print_dimensions[0] * dpi, print_dimensions[1] * dpi)
+        image_surface, _ = self.scale_and_convert("images/template.png", scale = dimensions)
+        #image_surface = pg.Surface(dimensions)
+        #image_surface.fill(self.colors_dict["white"])
+        #image_scale = 720.0 / 1800.0
 
-        image_positions = [(0, 0), (0, 455), (0, 455*2)]
+        image_positions = [(0, 0), (0, 435), (0, 435*2)]
 
         for i in range(len(images)):
             current_image, current_image_rect = self.scale_and_convert(images[i], scale = (600, 403))
