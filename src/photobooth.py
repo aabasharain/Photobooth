@@ -63,8 +63,9 @@ class Photobooth():
                 self.ui.toggle_fullscreen()
             elif key_pressed == "F2":
                 self.printer.change_default_printer()
-            elif key_pressed == "DWN" or key_pressed = "BTN":
+            elif key_pressed == "DWN" or key_pressed == "BTN":
                 connected = True
+                self.ui.wait(300)
         if not os.path.exists(SAVE_DIRECTORY):
             if DEBUG:
                 print("Creating a new folder at: {}".format(SAVE_DIRECTORY))
