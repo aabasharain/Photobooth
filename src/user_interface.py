@@ -148,13 +148,14 @@ class UserInterface():
         
         if printer_status == "Connected":
             printer_color = self.colors_dict["green"]
+            printer_name_text = self.font.render("Connected to: {}".format(printer_name), True, self.colors_dict["black"])
         else:
             printer_color = self.colors_dict["red"]
+            printer_name_text = self.font.render("", True, self.colors_dict["black"])
 
         printer_text = self.font.render("Printer status: {}".format(printer_status), True, printer_color)
         printer_text_rect = printer_text.get_rect(center = (pos_x, pos_y + 75))
         
-        printer_name_text = self.font.render("Connected to: {}".format(printer_name), True, self.colors_dict["black"])
         printer_name_rect = printer_name_text.get_rect(center = (pos_x, pos_y + 150))
 
         instruction_text = self.font.render("Press Button or Down Arrow to continue.", True, self.colors_dict["black"])

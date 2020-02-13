@@ -33,10 +33,10 @@ class Printer():
             self.conn = cups.Connection()
             printers = self.conn.getPrinters()
 
-            while not self.printer_name in printers:
-                self.change_default_printer()
-
-            success = True
+            if not self.printer_name in printers:
+                success = False
+            else:
+                success = True        
         except RuntimeError:
             print("Runtime Error when trying to connect to printer...")
             success = False
@@ -74,4 +74,8 @@ class Printer():
         return name
     
     def print_image(self, img):
-        self.conn.printFile(self.printer_name, img, "final image", {})
+        try:
+            self.conn.printFile(self.printer_name, img, "final image", {})
+        except cups.IPPError:
+            print("Not connected to a printer...")
+            
