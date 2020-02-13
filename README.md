@@ -1,4 +1,4 @@
-## Photobooth
+# Photobooth
 Photobooth application written in Python designed to be used with a Raspberry Pi, a DSLR camera that is supported by [libgphoto2](http://gphoto.org/proj/libgphoto2/support.php), and a printer that is supported by [CUPS](https://www.cups.org/).
 
 ## Hardware Requirements
@@ -23,9 +23,9 @@ HDMI Monitor/Screen
 
 ## Current Status
 
-This is still a work in progress, I will update this readme with instructions on setup when I am done.
+This is still a work in progress, I will update this readme with more in depth instructions on the setup when I am done.
 
-## Setup
+## Quick Setup
 
 Clone the repository to your preferred destination.
 
