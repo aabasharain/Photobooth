@@ -72,9 +72,11 @@ class Photobooth():
             os.makedirs(SAVE_DIRECTORY)
 
     def start(self):
+        self.ui.update_screen()
         while True:
             if DEBUG:
                 print("Showing Opening screen.")
+            self.ui.update_screen() 
             self.ui.opening_screen()
             key_pressed = self.ui.wait_for_input()
             

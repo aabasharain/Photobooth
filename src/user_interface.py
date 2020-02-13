@@ -48,6 +48,7 @@ class UserInterface():
         self.button = Button(BUTTON_GPIO_PIN)
 
     def update_screen(self):
+        pg.event.clear() # to avoid delayed inputs on keyboard
         pg.display.flip()
         self.clock.tick(30)
 
