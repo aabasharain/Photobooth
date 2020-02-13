@@ -30,10 +30,10 @@ SAVE_DIRECTORY = IMAGE_DIRECTORY + FOLDER_NAME
 
 class Photobooth():
 
-    def __init__(self):
+    def __init__(self, fullscreen = False):
         self.camera = Camera()
         self.printer = Printer()
-        self.ui = UserInterface()
+        self.ui = UserInterface(fullscreen = fullscreen)
         self.setup()
 
     def setup(self):
@@ -72,11 +72,9 @@ class Photobooth():
             os.makedirs(SAVE_DIRECTORY)
 
     def start(self):
-        self.ui.update_screen()
         while True:
             if DEBUG:
                 print("Showing Opening screen.")
-            self.ui.update_screen() 
             self.ui.opening_screen()
             key_pressed = self.ui.wait_for_input()
             
@@ -91,7 +89,6 @@ class Photobooth():
             elif key_pressed == "F4":
                 self.setup()
             elif key_pressed == "DWN" or key_pressed == "BTN":
-                self.ui.update_screen()
                 self.start_picture_process()
 
     def start_picture_process(self, num_pics = 3):
@@ -103,6 +100,8 @@ class Photobooth():
                 print("Showing {} of {} screen.".format(i + 1, num_pics))
             self.ui.x_of_y_screen(i + 1, num_pics)
             self.ui.wait(3000)
+            self.ui.update_screen()
+            self.ui.update_screen()
             
             if DEBUG:
                 print("Showing countdown screen.")

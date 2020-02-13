@@ -20,7 +20,15 @@ sys.path.append("src/")
 
 from photobooth import Photobooth
 
-pb = Photobooth()
+args = sys.argv
+
+if len(args) > 1 and args[1] == "-f":
+    fullscreen = True
+else:
+    fullscreen = False
+    
+
+pb = Photobooth(fullscreen = fullscreen)
 
 pb.start()
 

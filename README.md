@@ -48,6 +48,11 @@ Run the "main.py" file in the root folder of the project.
 ```
 python main.py
 ```
+If you want to start in fullscreen, you can add a "-f" flag after main.py.
+
+```
+python main.py -f
+```
 
 During the initial setup, you will have to enter the printer you want to use in the command line. This part is not that user friendly, but it was the simplest setup and you only need to do it once if you use the same printer. A window will pop up when you first run, click off of that into the command line, you will see a list of all available printers. Enter the name of the printer *exactly* and press enter.
 
