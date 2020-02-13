@@ -27,11 +27,15 @@ This is still a work in progress, I will update this readme with more in depth i
 
 ## Quick Setup
 
+### Python installations
+
 Clone the repository to your preferred destination.
 
 I recommend using a python virtual environment to install all of your libraries, but this is optional.
 
 Install all of the required libraries with pip, the links above should have instructions on how to install each library.
+
+### Hardware connections
 
 Connect your button to GPIO pin 25 (Pin 25 is set by default, but you can change in src/user_interface.py on line 22) and ground on the raspberry pi. See [Raspberry Pi Documentation](https://www.raspberrypi.org/documentation/usage/gpio/)
 
@@ -39,6 +43,7 @@ Connect DSLR camera into one of the pi's USB ports and turn the camera on. The P
 
 Connect printer into one of the pi's USB ports. You will need to configure and setup your printer with CUPS, you can find documentation and instructions online for that. Turn on printer.
 
+### Running the program
 Run the "main.py" file in the root folder of the project.
 
 ```
@@ -50,9 +55,13 @@ If you want to start in fullscreen, you can add a "-f" flag after main.py.
 python main.py -f
 ```
 
+### Default printer setup
+
 During the initial setup, you will have to enter the printer you want to use in the command line. This part is not that user friendly, but it was the simplest setup and you only need to do it once if you use the same printer. A window will pop up when you first run, (if you started in fullscreen press F1 to exit fullscreen and then go to the terminal window) click off of that into the terminal, you will see a list of all available printers. Enter the name of the printer *exactly* and press enter.
 
 After you enter the name you should see a setup screen in the window. It will show the status of the camera and printer connections as well as the name of the printer it is currently connected to. From there you can follow on screen prompts to continue and use the photobooth.
+
+### Optional Shell Script
 
 I recommend using a shell script (e.g. launcher.sh) to clear the printer queue before starting the program, something along the lines of:
 
