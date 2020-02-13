@@ -50,9 +50,45 @@ If you want to start in fullscreen, you can add a "-f" flag after main.py.
 python main.py -f
 ```
 
-During the initial setup, you will have to enter the printer you want to use in the command line. This part is not that user friendly, but it was the simplest setup and you only need to do it once if you use the same printer. A window will pop up when you first run, click off of that into the command line, you will see a list of all available printers. Enter the name of the printer *exactly* and press enter.
+During the initial setup, you will have to enter the printer you want to use in the command line. This part is not that user friendly, but it was the simplest setup and you only need to do it once if you use the same printer. A window will pop up when you first run, (if you started in fullscreen press F1 to exit fullscreen and then go to the terminal window) click off of that into the terminal, you will see a list of all available printers. Enter the name of the printer *exactly* and press enter.
 
 After you enter the name you should see a setup screen in the window. It will show the status of the camera and printer connections as well as the name of the printer it is currently connected to. From there you can follow on screen prompts to continue and use the photobooth.
+
+I recommend using a shell script (e.g. launcher.sh) to clear the printer queue before starting the program, something along the lines of:
+
+launcher.sh:
+```
+# !/bin/bash
+
+cancel -a
+cd /home/pi/path/to/photobooth
+python main.py -f
+```
+
+or if you are using a virtual environment:
+
+
+```
+# !/bin/bash
+
+cancel -a
+cd /home/pi/path/to/photobooth
+env/bin/python main.py -f
+```
+
+Cancel in particular will cancel all jobs in the printer queue. This is not necessary, but a precaution so that when you start the photobooth you have a clean queue for the printer.
+
+You can then make the shell script executable with chmod:
+
+```
+chmod 775 launcher.sh
+```
+
+Then start the program with:
+
+```
+sudo sh launcher.sh
+```
 
 ## License
 
