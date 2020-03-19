@@ -100,7 +100,7 @@ class Photobooth():
         for i in range(num_pics):
             if DEBUG:
                 print("Showing {} of {} screen.".format(i + 1, num_pics))
-                print(self.ui.clock.get_time())
+                print("Clock time since last tick: {}".format(self.ui.clock.get_time()))
             self.ui.x_of_y_screen(i + 1, num_pics)
             self.ui.wait(3000)
             
