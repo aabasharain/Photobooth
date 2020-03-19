@@ -43,6 +43,27 @@ Connect your DSLR camera into one of the pi's USB ports and turn the camera on. 
 
 Connect your printer into one of the pi's USB ports. You will need to configure and setup your printer with CUPS, you can find documentation and instructions online for that. Turn on printer. *Note: I have only tested this with a couple printers, but I've found that if there is a Guten Print driver available it works well. See [Guten Print Supported Printers](http://gimp-print.sourceforge.net/p_Supported_Printers.php).*
 
+Additionally, it is necessary to remove the capability for the Pi to use the camera as a USB drive:
+
+"Raspbian ships with a utility called `gvfs` to allow mounting cameras as virtual file systems.
+This enables you to access some camera models as if they were USB storage drives, however, it interferes with our use of the camera, as the operating system then claims exclusive access to the camera.
+Thus, we have to disable these functionalities.
+
+*Note: This might break file manager access etc. for some camera models.*
+
+To remove these files, enter the following in a terminal:
+```bash
+sudo rm /usr/share/dbus-1/services/org.gtk.vfs.GPhoto2VolumeMonitor.service
+sudo rm /usr/share/gvfs/mounts/gphoto2.mount
+sudo rm /usr/share/gvfs/remote-volume-monitors/gphoto2.mount
+sudo rm /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
+sudo rm /usr/lib/gvfs/gvfsd-gphoto2
+```
+
+You should reboot afterwards to make sure these changes are effective."
+
+[reuterbal/photobooth/Install.md](https://github.com/reuterbal/photobooth/blob/master/INSTALL.md)
+
 ### Running the program
 Run the "main.py" file in the root folder of the project.
 
@@ -96,7 +117,7 @@ chmod 775 launcher.sh
 Then start the program with:
 
 ```
-sudo sh launcher.sh
+sudo ./launcher.sh
 ```
 
 ## License

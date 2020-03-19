@@ -25,7 +25,7 @@ import time
 DEBUG = True
 
 FOLDER_NAME = time.strftime("%Y%m%d/")
-IMAGE_DIRECTORY = "images/"
+IMAGE_DIRECTORY = "images/camera_pictures/"
 SAVE_DIRECTORY = IMAGE_DIRECTORY + FOLDER_NAME
 
 class Photobooth():
