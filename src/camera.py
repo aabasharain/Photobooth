@@ -45,6 +45,7 @@ class Camera():
             #this is loadable with pygame through pygame.image.load()
             loadable_preview_file = io.BytesIO(preview_file_data)
         except gp.GPhoto2Error:
+            print("Error creating preview file...")
             loadable_preview_file = False
 
         return loadable_preview_file

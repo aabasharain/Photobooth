@@ -72,7 +72,7 @@ class Photobooth():
             os.makedirs(SAVE_DIRECTORY)
 
     def start(self):
-        self.camera.get_camera_preview()
+        
         while True:
             if DEBUG:
                 print("Showing Opening screen.")
@@ -90,6 +90,7 @@ class Photobooth():
             elif key_pressed == "F4":
                 self.setup()
             elif key_pressed == "DWN" or key_pressed == "BTN":
+                self.camera.get_camera_preview()
                 self.start_picture_process()
 
     def start_picture_process(self, num_pics = 3):
@@ -105,7 +106,7 @@ class Photobooth():
             
             if DEBUG:
                 print("Showing countdown screen.")
-                print(self.ui.clock.get_time())
+                print("Clock time since last tick: {}".format(self.ui.clock.get_time()))
             self.ui.countdown_screen(self.camera)
 
             if DEBUG:

@@ -213,7 +213,14 @@ class UserInterface():
             
 
             #get preview image and text surfaces from camera
-            preview_image, preview_image_rect = self.scale_and_convert(camera.get_camera_preview())
+            camera_preview = camera.get_camera_preview()
+            if camera_preview:
+                preview_image, preview_image_rect = self.scale_and_convert(camera.get_camera_preview())
+            else:
+                #this is an error catch if there is an issue getting preview from camera
+                preview_image = pg.Surface((surface_rect.width, surface_rect.height))
+                preview_image_rect = preview_image.get_rect()
+                preview_image.fill(self.colors_dict["white"])
             text_surface = self.font.render("{:.0f}".format(count), True, self.colors_dict["black"])
             text_rect = text_surface.get_rect(center = self.center_screen)
 
