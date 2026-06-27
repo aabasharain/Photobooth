@@ -34,6 +34,9 @@ def create_camera(backend: str = "gphoto2") -> CameraBase:
     if backend == "gphoto2":
         from photobooth.model.gphoto2_camera import Gphoto2Camera
         return Gphoto2Camera()
+    elif backend == "hdmi":
+        from photobooth.model.hdmi_camera import HDMICamera
+        return HDMICamera()
     raise ValueError(f"Unknown camera backend: {backend!r}")
 
 

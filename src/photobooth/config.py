@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
@@ -14,3 +14,4 @@ class Config:
     print_dimensions: tuple[int, int] = (2, 6)
     dpi: int = 300
     camera_backend: str = "gphoto2"
+    hdmi_device: int = 0
