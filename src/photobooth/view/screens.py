@@ -1,6 +1,26 @@
 import io
 
 import pygame as pg
+from pygame._freetype import Font as _FGFont, init as _ft_init
+
+
+class _Font:
+    """Thin wrapper around pygame._freetype.Font that normalizes
+    render() to return Surface (matching pygame.font.Font API)."""
+
+    def __init__(self, size: int):
+        self._font = _FGFont(None, size)
+
+    def render(
+        self,
+        text: str,
+        antialias: bool,
+        color: pg.Color | tuple[int, int, int],
+        background: pg.Color | tuple[int, int, int] | None = None,
+    ) -> pg.Surface:
+        self._font.antialiased = bool(antialias)
+        surf, _ = self._font.render(text, color, background)
+        return surf
 
 
 class View:
@@ -22,6 +42,7 @@ class View:
         self._center = (int(self.size[0] / 2), int(self.size[1] / 2))
 
         pg.init()
+        _ft_init()
         pg.display.set_caption("Photobooth")
         if fullscreen:
             self.screen = pg.display.set_mode(size, flags=pg.FULLSCREEN)
@@ -29,7 +50,7 @@ class View:
             self.screen = pg.display.set_mode(size)
         self.clock = pg.time.Clock()
         self.clock.tick(30)
-        self.font = pg.font.SysFont("TimesNewRoman", font_size)
+        self.font = _Font(font_size)
 
     def _update(self) -> None:
         pg.event.clear()
