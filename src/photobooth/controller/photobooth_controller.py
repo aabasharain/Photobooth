@@ -6,6 +6,7 @@ from pathlib import Path
 from photobooth._base import CameraBase, PrinterBase, create_camera, create_printer
 from photobooth.config import Config
 from photobooth.controller.input_handler import InputHandler
+from photobooth.exceptions import StateError
 from photobooth.model.photo_strip import PhotoStrip
 from photobooth.view.screens import View
 
@@ -81,7 +82,7 @@ class PhotoboothController:
         while self._state != State.EXIT:
             handler = self._handlers.get(self._state)
             if handler is None:
-                raise RuntimeError(f"No handler for state {self._state}")
+                raise StateError(self._state)
             self._state = handler()
 
     def _handle_input(self) -> str | None:

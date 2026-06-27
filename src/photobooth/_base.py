@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 
+from photobooth.exceptions import CameraBackendError
+
 
 class CameraBase(ABC):
     @abstractmethod
@@ -33,7 +35,7 @@ def create_camera(backend: str = "gphoto2") -> CameraBase:
         from photobooth.model.hdmi_camera import HDMICamera  # noqa: PLC0415
 
         return HDMICamera()
-    raise ValueError(f"Unknown camera backend: {backend!r}")
+    raise CameraBackendError(backend)
 
 
 def create_printer() -> PrinterBase:
