@@ -5,7 +5,8 @@ from photobooth.controller.photobooth_controller import PhotoboothController
 
 
 def main():
-    import sys
+    import sys  # noqa: PLC0415
+
     level = logging.DEBUG if "-d" in sys.argv or "--debug" in sys.argv else logging.INFO
     logging.basicConfig(
         level=level,

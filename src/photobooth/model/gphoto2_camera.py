@@ -1,4 +1,6 @@
+import contextlib
 import logging
+from pathlib import Path
 
 import gphoto2 as gp
 
@@ -8,7 +10,6 @@ logger = logging.getLogger(__name__)
 
 
 class Gphoto2Camera(CameraBase):
-
     def __init__(self):
         self.connected = False
         self._camera = None
@@ -26,10 +27,8 @@ class Gphoto2Camera(CameraBase):
 
     def stop(self) -> None:
         if self._camera:
-            try:
+            with contextlib.suppress(gp.GPhoto2Error):
                 self._camera.exit()
-            except gp.GPhoto2Error:
-                pass
 
     def preview(self) -> bytes | None:
         try:

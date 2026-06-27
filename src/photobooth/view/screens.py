@@ -24,7 +24,6 @@ class _Font:
 
 
 class View:
-
     def __init__(
         self,
         size: tuple[int, int] = (1280, 720),
@@ -99,18 +98,75 @@ class View:
         surface = pg.Surface(self.size)
         cx, cy = self._center
 
-        camera_color = self.colors["green"] if camera_status == "Connected" else self.colors["red"]
-        printer_color = self.colors["green"] if printer_status == "Connected" else self.colors["red"]
+        camera_color = (
+            self.colors["green"] if camera_status == "Connected" else self.colors["red"]
+        )
+        printer_color = (
+            self.colors["green"]
+            if printer_status == "Connected"
+            else self.colors["red"]
+        )
 
         texts = []
-        texts.append((self.font.render(f"Camera status: {camera_status}", True, camera_color), (cx, cy - 150)))
-        texts.append((self.font.render(f"Printer status: {printer_status}", True, printer_color), (cx, cy - 75)))
+        texts.append(
+            (
+                self.font.render(f"Camera status: {camera_status}", True, camera_color),
+                (cx, cy - 150),
+            )
+        )
+        texts.append(
+            (
+                self.font.render(
+                    f"Printer status: {printer_status}", True, printer_color
+                ),
+                (cx, cy - 75),
+            )
+        )
         if printer_status == "Connected":
-            texts.append((self.font.render(f"Connected to: {printer_name}", True, self.colors["black"]), (cx, cy)))
-        texts.append((self.font.render("Press Button or Down Arrow to continue.", True, self.colors["black"]), (cx, cy + 100)))
-        texts.append((self.font.render("Press F1 to enter fullscreen.", True, self.colors["black"]), (cx, cy + 150)))
-        texts.append((self.font.render("Press F2 to change default printer (in command line).", True, self.colors["black"]), (cx, cy + 200)))
-        texts.append((self.font.render("Press F4 to refresh connection.", True, self.colors["black"]), (cx, cy + 250)))
+            texts.append(
+                (
+                    self.font.render(
+                        f"Connected to: {printer_name}", True, self.colors["black"]
+                    ),
+                    (cx, cy),
+                )
+            )
+        texts.append(
+            (
+                self.font.render(
+                    "Press Button or Down Arrow to continue.",
+                    True,
+                    self.colors["black"],
+                ),
+                (cx, cy + 100),
+            )
+        )
+        texts.append(
+            (
+                self.font.render(
+                    "Press F1 to enter fullscreen.", True, self.colors["black"]
+                ),
+                (cx, cy + 150),
+            )
+        )
+        texts.append(
+            (
+                self.font.render(
+                    "Press F2 to change default printer (in command line).",
+                    True,
+                    self.colors["black"],
+                ),
+                (cx, cy + 200),
+            )
+        )
+        texts.append(
+            (
+                self.font.render(
+                    "Press F4 to refresh connection.", True, self.colors["black"]
+                ),
+                (cx, cy + 250),
+            )
+        )
 
         surface.fill(self.colors["white"])
         for text_surf, pos in texts:
@@ -132,7 +188,9 @@ class View:
         surface.blit(text, rect)
         self._set_display(surface, surface.get_rect())
 
-    def show_countdown_frame(self, preview_data: bytes | None, remaining: float) -> None:
+    def show_countdown_frame(
+        self, preview_data: bytes | None, remaining: float
+    ) -> None:
         surface = pg.Surface(self.size)
         surface_rect = surface.get_rect()
 
@@ -149,7 +207,9 @@ class View:
         text = self.font.render(f"{remaining:.0f}", True, self.colors["black"])
         text_rect = text.get_rect(center=self._center)
 
-        pg.draw.circle(alpha, pg.Color(255, 255, 255, 175), self._center, int(self.size[0] / 16))
+        pg.draw.circle(
+            alpha, pg.Color(255, 255, 255, 175), self._center, int(self.size[0] / 16)
+        )
         alpha.blit(text, text_rect)
 
         surface.fill(self.colors["white"])

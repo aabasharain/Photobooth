@@ -2,7 +2,6 @@ import pygame as pg
 
 
 class PhotoStrip:
-
     def __init__(self, print_dimensions: tuple[int, int] = (2, 6), dpi: int = 300):
         self._dimensions = (print_dimensions[0] * dpi, print_dimensions[1] * dpi)
 

@@ -28,6 +28,3 @@ def test_custom_config():
     assert config.fullscreen is True
     assert config.camera_backend == "hdmi"
     assert config.num_pictures == 4
-
-
-

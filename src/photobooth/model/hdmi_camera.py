@@ -9,7 +9,6 @@ logger = logging.getLogger(__name__)
 
 
 class HDMICamera(CameraBase):
-
     def __init__(self, device: int = 0, resolution: tuple[int, int] | None = None):
         self._device = device
         self._resolution = resolution

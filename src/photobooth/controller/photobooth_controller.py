@@ -1,4 +1,3 @@
-import os
 import sys
 import time
 from enum import Enum, auto
@@ -23,7 +22,6 @@ class State(Enum):
 
 
 class PhotoboothController:
-
     def __init__(
         self,
         camera: CameraBase,
@@ -87,12 +85,10 @@ class PhotoboothController:
             self._state = handler()
 
     def _handle_input(self) -> str | None:
-        """Common input handling across states. Returns action string or None."""
         key = self.input_handler.wait()
         if key == "ESC":
             sys.exit()
-            return "ESC"
-        elif key == "F1":
+        if key == "F1":
             self.view.toggle_fullscreen()
             return None
         return key
@@ -112,7 +108,7 @@ class PhotoboothController:
             key = self.input_handler.wait()
             if key == "ESC":
                 return State.EXIT
-            elif key == "F1":
+            if key == "F1":
                 self.view.toggle_fullscreen()
             elif key == "F2":
                 self.printer.change_default_printer()
@@ -131,12 +127,12 @@ class PhotoboothController:
 
         if key == "ESC":
             return State.EXIT
-        elif key == "F1":
+        if key == "F1":
             self.view.toggle_fullscreen()
             return State.OPENING
-        elif key == "F4":
+        if key == "F4":
             return State.SETUP
-        elif key in ("DWN", "BTN"):
+        if key in ("DWN", "BTN"):
             self._pic_index = 0
             self._images = []
             self.camera.preview()
@@ -160,7 +156,7 @@ class PhotoboothController:
     def _do_show_capture(self) -> State:
         time_name = time.strftime("%H%M%S")
         assert self._save_dir is not None
-        target = str(self._save_dir / "{}.jpg".format(time_name))
+        target = str(self._save_dir / f"{time_name}.jpg")
 
         success = False
         while not success:
@@ -177,12 +173,16 @@ class PhotoboothController:
         return State.COMPOSE
 
     def _do_compose(self) -> State:
-        target = str(self._save_dir / "final_image_{}.jpg".format(time.strftime("%H%M")))
+        target = str(
+            self._save_dir / "final_image_{}.jpg".format(time.strftime("%H%M"))
+        )
         self.photo_strip.compose(self._images, target)
         return State.PRINT
 
     def _do_print(self) -> State:
-        target = str(self._save_dir / "final_image_{}.jpg".format(time.strftime("%H%M")))
+        target = str(
+            self._save_dir / "final_image_{}.jpg".format(time.strftime("%H%M"))
+        )
         self.view.show_print(target)
         self.view.wait(5000)
         self.printer.print_file(target)
