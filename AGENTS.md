@@ -7,8 +7,9 @@ HDMI dongle via V4L2/OpenCV).
 ## Run
 
 ```bash
-python main.py          # windowed
-python main.py -f       # fullscreen
+python -m photobooth          # windowed
+python -m photobooth -f       # fullscreen
+photobooth                    # if installed via pip/uv
 ```
 
 ## Package
@@ -37,7 +38,14 @@ Controller
 
 ## State machine
 
-Opening → Setup → Countdown → Capture(x3) → Compose → Print → Opening
+```
+Setup → Opening → Progress → Countdown → ShowCapture → Compose → Print
+  ^                                                         (xN)       |
+  └──────────────────────── Opening ←───────────────────────────────────┘
+```
+
+Escape at any state → EXIT; F1 toggles fullscreen in SETUP/OPENING;
+F4 resets to SETUP from OPENING.
 
 ## Controls
 
@@ -63,4 +71,6 @@ python -m pytest --hw     # integration (real camera/printer)
 - Logging, not `DEBUG` globals
 - No `sys.path` hacks — proper package
 - Capture stills to `images/camera_pictures/<YYYYMMDD>/`
+- HDMI backend: set `Config(camera_backend="hdmi", hdmi_device=N)` or pass `-b hdmi` to CLI
+- Type hints on all public signatures
 - `.pyc` files excluded from git (clean up legacy committed ones)
