@@ -1,5 +1,5 @@
 [build-system]
-requires = ["uv_build"]
+requires = ["uv_build<0.12"]
 build-backend = "uv_build"
 
 [project]
@@ -22,6 +22,7 @@ photobooth = "photobooth.__main__:main"
 
 [tool.pytest.ini_options]
 testpaths = ["test"]
+python_files = ["test_*.py"]
 
 [dependency-groups]
 dev = [
