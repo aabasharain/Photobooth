@@ -3,11 +3,6 @@ import io
 import pygame as pg
 
 
-import io
-
-import pygame as pg
-
-
 class View:
 
     def __init__(
