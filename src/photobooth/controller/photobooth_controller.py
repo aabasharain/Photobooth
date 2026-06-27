@@ -79,7 +79,7 @@ class PhotoboothController:
             config=config,
         )
 
-    def run(self):
+    def run(self) -> None:
         while self._state != State.EXIT:
             handler = self._handlers.get(self._state)
             if handler is None:
@@ -98,7 +98,7 @@ class PhotoboothController:
         return key
 
     def _do_setup(self) -> State:
-        connected = False
+        connected: bool = False
         while not connected:
             camera_ok = self.camera.start()
             printer_ok = self.printer.start()
@@ -159,6 +159,7 @@ class PhotoboothController:
 
     def _do_show_capture(self) -> State:
         time_name = time.strftime("%H%M%S")
+        assert self._save_dir is not None
         target = str(self._save_dir / "{}.jpg".format(time_name))
 
         success = False

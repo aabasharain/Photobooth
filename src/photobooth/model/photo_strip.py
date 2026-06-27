@@ -18,7 +18,10 @@ class PhotoStrip:
         return target
 
     @staticmethod
-    def _load_and_scale(file: str, scale: tuple[int, int]):
+    def _load_and_scale(
+        file: str,
+        scale: tuple[int, int],
+    ) -> tuple[pg.Surface, pg.Rect]:
         image = pg.image.load(file)
         image_scaled = pg.transform.scale(image, scale)
         return image_scaled.convert(), image_scaled.get_rect()

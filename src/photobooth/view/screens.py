@@ -3,12 +3,22 @@ import io
 import pygame as pg
 
 
+import io
+
+import pygame as pg
+
+
 class View:
 
-    def __init__(self, size=(1280, 720), fullscreen=False, font_size=48):
+    def __init__(
+        self,
+        size: tuple[int, int] = (1280, 720),
+        fullscreen: bool = False,
+        font_size: int = 48,
+    ):
         self.size = size
         self.fullscreen = fullscreen
-        self.colors = {
+        self.colors: dict[str, pg.Color] = {
             "black": pg.Color(0, 0, 0),
             "white": pg.Color(255, 255, 255),
             "green": pg.Color(0, 200, 0),
@@ -26,7 +36,7 @@ class View:
         self.clock.tick(30)
         self.font = pg.font.SysFont("TimesNewRoman", font_size)
 
-    def _update(self):
+    def _update(self) -> None:
         pg.event.clear()
         pg.display.flip()
         self.clock.tick(30)
@@ -34,24 +44,28 @@ class View:
     def frame_time(self) -> float:
         return self.clock.get_time() / 1000.0
 
-    def wait(self, ms: int):
+    def wait(self, ms: int) -> None:
         pg.time.wait(ms)
         self._update()
         self._update()
 
-    def _load_and_scale(self, file, scale=None):
+    def _load_and_scale(
+        self,
+        file: str | bytes,
+        scale: tuple[int, int] | None = None,
+    ) -> tuple[pg.Surface, pg.Rect]:
         if scale is None:
             scale = self.size
         image = pg.image.load(file)
         scaled = pg.transform.scale(image, scale)
         return scaled.convert(), scaled.get_rect()
 
-    def _set_display(self, surface, rect):
+    def _set_display(self, surface: pg.Surface, rect: pg.Rect) -> None:
         self.screen.fill(self.colors["white"])
         self.screen.blit(surface, rect)
         self._update()
 
-    def toggle_fullscreen(self):
+    def toggle_fullscreen(self) -> None:
         if self.fullscreen:
             self.screen = pg.display.set_mode(self.size)
         else:
@@ -59,7 +73,12 @@ class View:
         self.fullscreen = not self.fullscreen
         self._update()
 
-    def show_setup(self, camera_status, printer_status, printer_name):
+    def show_setup(
+        self,
+        camera_status: str,
+        printer_status: str,
+        printer_name: str,
+    ) -> None:
         self._update()
         surface = pg.Surface(self.size)
         cx, cy = self._center
@@ -83,12 +102,12 @@ class View:
             surface.blit(text_surf, rect)
         self._set_display(surface, surface.get_rect())
 
-    def show_opening(self):
+    def show_opening(self) -> None:
         self._update()
         img, rect = self._load_and_scale("images/photobooth_opening.png")
         self._set_display(img, rect)
 
-    def show_progress(self, current: int, total: int):
+    def show_progress(self, current: int, total: int) -> None:
         self._update()
         surface = pg.Surface(self.size)
         text = self.font.render(f"{current} of {total}", True, self.colors["black"])
@@ -97,7 +116,7 @@ class View:
         surface.blit(text, rect)
         self._set_display(surface, surface.get_rect())
 
-    def show_countdown_frame(self, preview_data: bytes | None, remaining: float):
+    def show_countdown_frame(self, preview_data: bytes | None, remaining: float) -> None:
         surface = pg.Surface(self.size)
         surface_rect = surface.get_rect()
 
@@ -123,7 +142,7 @@ class View:
 
         self._set_display(surface, surface_rect)
 
-    def show_caption(self, text: str):
+    def show_caption(self, text: str) -> None:
         surface = pg.Surface(self.size)
         text_surf = self.font.render(text, True, self.colors["black"])
         rect = text_surf.get_rect(center=self._center)
@@ -131,14 +150,14 @@ class View:
         surface.blit(text_surf, rect)
         self._set_display(surface, surface.get_rect())
 
-    def show_image(self, path: str):
+    def show_image(self, path: str) -> None:
         self._update()
         img_surf, img_rect = self._load_and_scale(str(path))
         surface = pg.Surface(self.size)
         surface.blit(img_surf, img_rect)
         self._set_display(surface, surface.get_rect())
 
-    def show_print(self, path: str):
+    def show_print(self, path: str) -> None:
         self._update()
         surface = pg.Surface(self.size)
         img_surf, img_rect = self._load_and_scale(str(path), scale=(100, 300))
