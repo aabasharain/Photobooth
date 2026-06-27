@@ -1,7 +1,7 @@
 from photobooth.user_interface import UserInterface
-from photobooth.camera import Camera
+from photobooth.gphoto2_camera import Gphoto2Camera
 
-camera = Camera()
+camera = Gphoto2Camera()
 camera.start()
 
 ui = UserInterface()
