@@ -1,7 +1,10 @@
+import logging
+
 import gphoto2 as gp
-import io
 
 from photobooth._base import CameraBase
+
+logger = logging.getLogger(__name__)
 
 
 class Gphoto2Camera(CameraBase):
@@ -17,7 +20,7 @@ class Gphoto2Camera(CameraBase):
             self._camera.init()
             success = True
         except gp.GPhoto2Error:
-            print("GPhoto2 error when trying to initialize camera...")
+            logger.warning("GPhoto2 error when trying to initialize camera")
             success = False
         return success
 
@@ -33,7 +36,7 @@ class Gphoto2Camera(CameraBase):
             preview_file = self._camera.capture_preview()
             return preview_file.get_data_and_size()
         except gp.GPhoto2Error:
-            print("Error creating preview file...")
+            logger.warning("Error creating preview file")
             return None
 
     def capture(self, dest: str | Path) -> bool:

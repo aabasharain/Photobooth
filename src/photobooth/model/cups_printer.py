@@ -1,6 +1,10 @@
+import logging
+
 import cups
 
 from photobooth._base import PrinterBase
+
+logger = logging.getLogger(__name__)
 
 
 class CupsPrinter(PrinterBase):
@@ -24,7 +28,7 @@ class CupsPrinter(PrinterBase):
             else:
                 success = True
         except RuntimeError:
-            print("Runtime Error when trying to connect to printer...")
+            logger.warning("Runtime error when trying to connect to printer")
             success = False
         return success
 
@@ -33,7 +37,7 @@ class CupsPrinter(PrinterBase):
             self._conn.printFile(self.printer_name, path, "final image", {})
             return True
         except cups.IPPError:
-            print("Not connected to a printer...")
+            logger.warning("Not connected to a printer")
             return False
 
     def change_default_printer(self) -> None:
@@ -51,12 +55,12 @@ class CupsPrinter(PrinterBase):
             with open("default_printer.txt", 'w') as f:
                 f.write(self.printer_name)
         except IOError:
-            print("Error opening default printer file...")
+            logger.warning("Could not save default printer file")
 
     def _load_default_printer(self) -> str:
         try:
             with open("default_printer.txt") as f:
                 return f.read()
         except IOError:
-            print("Error opening default printer file...")
+            logger.info("No default printer file found, will prompt on setup")
             return ""
