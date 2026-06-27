@@ -1,14 +1,11 @@
 import io
 
 import pygame as pg
-from gpiozero import Button
 
 from photobooth._base import CameraBase
 
-BUTTON_GPIO_PIN = 25
 
-
-class UserInterface():
+class UserInterface:
 
     def __init__(self, size=(1280, 720), fullscreen=False, font_size=48):
         self.size = size
@@ -19,13 +16,11 @@ class UserInterface():
             "green": pg.Color(0, 200, 0),
             "red": pg.Color(255, 0, 0),
         }
-        self.ui_surfaces = {}
 
         self.center_screen = (int(self.size[0] / 2), int(self.size[1] / 2))
 
         pg.init()
         pg.display.set_caption('Photobooth')
-        pg.font.init()
         if fullscreen:
             self.screen = pg.display.set_mode(size, flags=pg.FULLSCREEN)
         else:
@@ -33,8 +28,6 @@ class UserInterface():
         self.clock = pg.time.Clock()
         self.clock.tick(30)
         self.font = pg.font.SysFont("TimesNewRoman", font_size)
-
-        self.button = Button(BUTTON_GPIO_PIN)
 
     def update_screen(self):
         pg.event.clear()
@@ -66,36 +59,6 @@ class UserInterface():
         self.screen.blit(surface, rect)
         self.update_screen()
 
-    def wait_for_input(self):
-        while True:
-            for event in pg.event.get():
-                if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
-                    pg.event.clear()
-                    return "ESC"
-                if event.type == pg.KEYDOWN:
-                    if event.key == pg.K_F1:
-                        pg.event.clear()
-                        return "F1"
-                    elif event.key == pg.K_F2:
-                        pg.event.clear()
-                        return "F2"
-                    elif event.key == pg.K_F3:
-                        pg.event.clear()
-                        return "F3"
-                    elif event.key == pg.K_F4:
-                        pg.event.clear()
-                        return "F4"
-                    elif event.key == pg.K_UP:
-                        pg.event.clear()
-                        return "UP"
-                    elif event.key == pg.K_DOWN:
-                        pg.event.clear()
-                        return "DWN"
-
-            if self.button.is_pressed:
-                pg.event.clear()
-                return "BTN"
-
     def setup_screen(self, camera_status, printer_status, printer_name):
         self.update_screen()
         surface = pg.Surface(self.size)
@@ -120,7 +83,6 @@ class UserInterface():
 
         printer_text = self.font.render("Printer status: {}".format(printer_status), True, printer_color)
         printer_text_rect = printer_text.get_rect(center=(pos_x, pos_y + 75))
-
         printer_name_rect = printer_name_text.get_rect(center=(pos_x, pos_y + 150))
 
         instruction_text = self.font.render("Press Button or Down Arrow to continue.", True, self.colors_dict["black"])
@@ -179,6 +141,7 @@ class UserInterface():
                 preview_image = pg.Surface((surface_rect.width, surface_rect.height))
                 preview_image_rect = preview_image.get_rect()
                 preview_image.fill(self.colors_dict["white"])
+
             text_surface = self.font.render("{:.0f}".format(count), True, self.colors_dict["black"])
             text_rect = text_surface.get_rect(center=self.center_screen)
 
@@ -220,16 +183,3 @@ class UserInterface():
         surface.blit(text, text_rect)
         surface.blit(img_surface, (int(self.center_screen[0] - img_rect.width / 2), int(img_rect.height / 2)))
         self.set_screen_display(surface, surface_rect)
-
-    def create_final_image(self, images, target, print_dimensions=(2, 6), dpi=300):
-        dimensions = (print_dimensions[0] * dpi, print_dimensions[1] * dpi)
-        image_surface, _ = self.scale_and_convert("images/template.png", scale=dimensions)
-
-        image_positions = [(0, 0), (0, 435), (0, 435 * 2)]
-
-        for i in range(len(images)):
-            current_image, _ = self.scale_and_convert(images[i], scale=(600, 403))
-            image_surface.blit(current_image, image_positions[i])
-
-        pg.image.save(image_surface, target)
-        return target

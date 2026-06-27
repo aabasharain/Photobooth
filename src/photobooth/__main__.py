@@ -1,10 +1,11 @@
+from photobooth.config import Config
 from photobooth.photobooth import Photobooth
 
 
 def main():
     import sys
-    fullscreen = "-f" in sys.argv
-    pb = Photobooth(fullscreen=fullscreen)
+    config = Config(fullscreen="-f" in sys.argv)
+    pb = Photobooth(config=config)
     pb.start()
 
 
