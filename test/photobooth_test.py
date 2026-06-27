@@ -1,5 +1,6 @@
-from photobooth.photobooth import Photobooth
+from photobooth.config import Config
+from photobooth.controller.photobooth_controller import PhotoboothController
 
-pb = Photobooth()
-
-pb.start()
+config = Config()
+controller = PhotoboothController.from_config(config)
+controller.run()

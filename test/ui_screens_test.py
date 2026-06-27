@@ -1,24 +1,28 @@
-from photobooth.user_interface import UserInterface
-from photobooth.gphoto2_camera import Gphoto2Camera
+from photobooth.model.gphoto2_camera import Gphoto2Camera
+from photobooth.view.screens import View
 
 camera = Gphoto2Camera()
 camera.start()
 
-ui = UserInterface()
+view = View()
 
-ui.setup_screen("con", "not con")
-ui.wait_for_input()
+view.show_setup("con", "not con", "")
+input()
 
-ui.opening_screen()
-ui.wait_for_input()
+view.show_opening()
+input()
 
-ui.x_of_y_screen(1, 3)
-ui.wait_for_input()
+view.show_progress(1, 3)
+input()
 
-ui.countdown_screen(camera)
+# view.show_countdown_frame(...)
+# view.show_caption(...)
 
-ui.image_screen("../images/photobooth_opening.png")
-ui.wait_for_input()
+capture = camera.capture("/tmp/test_capture.jpg")
+print("capture:", capture)
 
-ui.print_screen("../images/photobooth_opening.png")
-ui.wait_for_input()
+view.show_image("images/photobooth_opening.png")
+input()
+
+view.show_print("images/photobooth_opening.png")
+input()

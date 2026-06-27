@@ -32,11 +32,11 @@ class PrinterBase(ABC):
 
 def create_camera(backend: str = "gphoto2") -> CameraBase:
     if backend == "gphoto2":
-        from photobooth.gphoto2_camera import Gphoto2Camera
+        from photobooth.model.gphoto2_camera import Gphoto2Camera
         return Gphoto2Camera()
     raise ValueError(f"Unknown camera backend: {backend!r}")
 
 
 def create_printer() -> PrinterBase:
-    from photobooth.cups_printer import CupsPrinter
+    from photobooth.model.cups_printer import CupsPrinter
     return CupsPrinter()

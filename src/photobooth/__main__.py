@@ -1,13 +1,3 @@
-from photobooth.config import Config
-from photobooth.photobooth import Photobooth
+from photobooth import main
 
-
-def main():
-    import sys
-    config = Config(fullscreen="-f" in sys.argv)
-    pb = Photobooth(config=config)
-    pb.start()
-
-
-if __name__ == "__main__":
-    main()
+main()
