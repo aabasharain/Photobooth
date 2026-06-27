@@ -1,13 +1,8 @@
-.pygametest.py.swo
-.pygametest.py.swp
-__pycache__/*
-__pycahce__
-src/__pycache__
+__pycache__/
+*.pyc
 images/camera_pictures/*
-images/photobooth_opening_old.png
-images/Poranee_Adrian.png
-env/*
-env
+.env
+*.egg-info/
 test/default_printer.txt
 default_printer.txt
 launcher.sh

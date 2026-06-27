@@ -17,7 +17,7 @@
 
 import pygame as pg
 from gpiozero import Button
-from camera import Camera
+from photobooth.camera import Camera
 
 BUTTON_GPIO_PIN = 25
 

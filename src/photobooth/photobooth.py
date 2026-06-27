@@ -15,9 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from camera import Camera
-from user_interface import UserInterface
-from printer import Printer
+from photobooth.camera import Camera
+from photobooth.user_interface import UserInterface
+from photobooth.printer import Printer
 import sys
 import os
 import time

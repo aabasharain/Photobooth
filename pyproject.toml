@@ -1,0 +1,30 @@
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"
+
+[project]
+name = "photobooth"
+version = "0.2.0"
+description = "Photobooth application for Raspberry Pi with dual camera backends"
+requires-python = ">=3.10"
+license = "GPL-3.0-only"
+authors = [{name = "Aaron Basharain"}]
+dependencies = [
+    "gphoto2",
+    "pycups",
+    "pygame",
+    "gpiozero",
+    "opencv-python",
+]
+
+[project.scripts]
+photobooth = "photobooth.__main__:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=7",
+    "ruff",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

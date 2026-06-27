@@ -1,7 +1,4 @@
-import sys
-sys.path.append("../src/")
-
-from photobooth import Photobooth
+from photobooth.photobooth import Photobooth
 
 pb = Photobooth()
 

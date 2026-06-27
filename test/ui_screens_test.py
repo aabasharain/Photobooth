@@ -1,8 +1,5 @@
-import sys
-sys.path.append("../src/")
-
-from user_interface import UserInterface
-from camera import Camera
+from photobooth.user_interface import UserInterface
+from photobooth.camera import Camera
 
 camera = Camera()
 camera.start()
